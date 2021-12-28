@@ -1,0 +1,22 @@
+:pdf-stylesdir: theme
+:pdf-style: theme.yml
+:pdf-fontsdir: fonts
+:imagesdir: img
+:stylesdir: style
+:stylesheet: style-fedora.css
+:title-page-background-image: image:cover.png[]
+:lang: ja
+:scripts: cjk
+:doctype: book
+:pagenums:
+:icons: font
+:chapter-label:
+:figure-caption: 図
+:example-caption: 例
+:table-caption: 表
+:appendix-caption: 付録
+:toc-title: 目次
+:listing-caption: リスト
+:toc: left
+:toclevels: 5
+:sectnums:
