@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.15">
+<meta name="author" content="德永 優 &lt;tokunaga.y@tyco.co.jp&gt;">
+<title>ターミナルとGit</title>
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
+@import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+:root {
+  --maincolor: #ffffff;
+  --primarycolor: #294172; /* Fedora Dark Blue */
+  --secondarycolor: #3c6eb4; /* Fedora Blue */
+  --tertiarycolor: #cccccc;
+  --highlightcolor: #e59728; /* Features Orange */
+  --sidebarbackground: #cacaca;
+  --linkcolor: #0d47a1;
+  --linkcoloralternate: #db3279; /* Friends Magneta */
+  --white: #ffffff;
+  --black: #000000;
+}
+
+/* Text styles */
+
+body {
+  font-family: "Gotham", "Noto Sans JP", sans-serif;
+  background-color: var(--maincolor);
+  color: var(--black);
+}
+
+h1 {
+  color: var(--primarycolor) !important;
+  font-family: "Montserrat", sans-serif;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--secondarycolor) !important;
+  font-family: "Montserrat", sans-serif;
+}
+.title {
+  color: var(--black) !important;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+}
+a {
+  text-decoration: none;
+}
+p {
+  font-family: "Open Sans", sans-serif !important;
+}
+#toc.toc2 a:link {
+  color: var(--linkcolor);
+}
+blockquote {
+  color: var(--linkcoloralternate) !important;
+}
+.quoteblock blockquote:before {
+  color: var(--linkcoloralternate);
+}
+code {
+  color: var(--white);
+  background-color: var(--highlightcolor) !important;
+}
+mark {
+  background-color: var(--highlightcolor);
+} /* Text highlighting color */
+
+/* Table styles */
+th {
+  background-color: var(--maincolor);
+  color: var(--black) !important;
+}
+td {
+  background-color: var(--maincolor);
+  color: var(--black) !important;
+}
+
+#toc.toc2 {
+  background-color: var(--sidebarbackground);
+}
+#toctitle {
+  color: var(--white);
+}
+
+/* Responsiveness fixes */
+video {
+  max-width: 100%;
+}
+
+@media all and (max-width: 600px) {
+  table {
+    width: 55vw !important;
+    font-size: 3vw;
+  }
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>ターミナルとGit</h1>
+<div class="details">
+<span id="author" class="author">德永 優 &lt;tokunaga.y@tyco.co.jp&gt;</span><br>
+<span id="revnumber">version 0.1,</span>
+<span id="revdate">2021-12-28</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">目次</div>
+<ul class="sectlevel1">
+<li><a href="#_git">1. Git ?</a></li>
+<li><a href="#_使えたら何が嬉しい">2. 使えたら何が嬉しい？</a></li>
+<li><a href="#_用語の定義">3. 用語の定義</a></li>
+<li><a href="#_gitの概念">4. Gitの概念</a></li>
+<li><a href="#_準備">5. 準備</a>
+<ul class="sectlevel2">
+<li><a href="#_githubアカウント">5.1. GitHubアカウント</a></li>
+<li><a href="#_git_bash">5.2. Git Bash</a></li>
+<li><a href="#_見方">5.3. 見方</a></li>
+</ul>
+</li>
+<li><a href="#_基本操作">6. 基本操作</a>
+<ul class="sectlevel2">
+<li><a href="#_ファイル一覧の取得">6.1. ファイル一覧の取得</a></li>
+<li><a href="#_ディレクトリへの移動">6.2. ディレクトリへの移動</a></li>
+<li><a href="#_リモートリポジトリのクローン">6.3. リモートリポジトリのクローン</a></li>
+<li><a href="#_変更を加える作業">6.4. 変更を加える作業</a></li>
+<li><a href="#_git_add">6.5. git add</a></li>
+<li><a href="#_git_commit">6.6. git commit</a></li>
+<li><a href="#_git_push">6.7. git push</a></li>
+</ul>
+</li>
+<li><a href="#_まとめ">7. まとめ</a></li>
+<li><a href="#_説明を省いたこと">付録 A: 説明を省いたこと</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_git">1. Git ?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ググると、分散型バージョン管理システムです。と出てきます。<br>
+が、それってなんだよという方向けに本書を作成します。<br>
+そのため、厳密な説明も省きます。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_使えたら何が嬉しい">2. 使えたら何が嬉しい？</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>変更の差分がわかりやすい</p>
+</li>
+<li>
+<p>中央集権型ではなく、分散型なので誰が抜けても増えても管理が楽（ローカルにリポジトリがある）</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>メリット説明するのにも用語の定義が必要なのでそっちを先にします</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_用語の定義">3. 用語の定義</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Git</dt>
+<dd>
+<p>よく誤解されがちですが、Gitはサービス名ではなく、総称です。システム開発などではファイルを細かく何度も変更しますので、それらをバージョン管理して「最新のものはどれか」「以前はどのような中身だったか」などの情報を管理できるような技術を指します。</p>
+</dd>
+<dt class="hdlist1">GitHub</dt>
+<dd>
+<p>Gitを利用したサービス。GitLabやBacklogもGitを利用するが、競合の中では頭一つ抜けているイメージ。</p>
+</dd>
+<dt class="hdlist1">ターミナル</dt>
+<dd>
+<p>以下のような黒い画面です。</p>
+<div class="imageblock">
+<div class="content">
+<img src="img/cap1.png" alt="cap1">
+</div>
+</div>
+<div class="paragraph">
+<p>皆さんが普段見られている色鮮やかな画面は、マウスを動かすとカーソルが動き、ショートカットをクリックするとWebページが開きますが、ターミナルは<strong>コマンド</strong>と呼ばれる命令以外に反応しません。</p>
+</div>
+<div class="paragraph">
+<p>ターミナルアプリケーションにコマンドプロンプト、パワーシェル、Git Bashなどがあります。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+グラフィック有の画面がGUI、無の画面がCUIと呼ばれます。皆さんがCUIを見ることは恐らく無いでしょうが、ターミナルはGUI環境からCUIの操作をするための媒介ツールとなります。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>本ドキュメントでは主に、初歩的な<strong>コマンド</strong>について記載します。</p>
+</div>
+</dd>
+<dt class="hdlist1">リポジトリ</dt>
+<dd>
+<p>ファイルやディレクトリの状態を記録する場所です。保存された状態は、内容の変更履歴として格納されています。<br>
+リモートリポジトリはGithubを選択することが多いと思います。<br>
+ローカルリポジトリはあなたのPCの中にあります。<br>
+GitHubの場合は、無料で非公開のリポジトリを作成できます。</p>
+</dd>
+<dt class="hdlist1">ディレクトリ</dt>
+<dd>
+<p>フォルダのこと。べつにどっちでもいいと言ったら怒られるが、CUIを触るときにフォルダと呼ぶのは違和感を感じるのでディレクトリで問題ない。</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gitの概念">4. Gitの概念</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>以下、無理やり覚えること。<br>
+ワークツリーはワークツリー(?)という場所、コミットはコミット(?)という処理、という認識でOK。</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>add</code>して、ワークツリー内のファイルをインデックスに追跡対象として登録</p>
+</li>
+<li>
+<p><code>commmit</code>して、インデックスに登録されたファイルの差分がローカルリポジトリに格納</p>
+</li>
+<li>
+<p><code>push</code>して、ローカルリポジトリの情報をリモートリポジトリに連係</p>
+</li>
+</ol>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="img/back.png" alt="back">
+</div>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; <a href="https://backlog.com/ja/git-tutorial/intro/04/">サル先生のGit入門</a>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_準備">5. 準備</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_githubアカウント">5.1. GitHubアカウント</h3>
+<div class="paragraph">
+<p>以下から登録。登録済みならスキップ。<br>
+<a href="https://github.com/" class="bare">https://github.com/</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_git_bash">5.2. Git Bash</h3>
+<div class="paragraph">
+<p>Git操作するターミナルはなんでもいいですが、ここではGitコマンドからインストールする必要がない<strong>Git Bash</strong>を選定します。</p>
+</div>
+<div class="paragraph">
+<p><a href="https://gitforwindows.org/">まずはここからインストール！</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_見方">5.3. 見方</h3>
+<div class="imageblock">
+<div class="content">
+<img src="img/bash.png" alt="bash">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+德永はBashのインタフェースをカスタマイズしているため、配色や透過度がデフォルト値が異なりますがご承知おきください。
+</td>
+</tr>
+</table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">tokunaga.y</dt>
+<dd>
+<p>ユーザ名</p>
+</dd>
+<dt class="hdlist1">@TYCO205</dt>
+<dd>
+<p>ホスト名(パソコンに付けれられた名前)</p>
+</dd>
+<dt class="hdlist1">MINGW64</dt>
+<dd>
+<p>gccコンパイラ(無視してOK)</p>
+</dd>
+<dt class="hdlist1">/</dt>
+<dd>
+<p>今開いているディレクトリ<br>
+「/(ルート)」とは、一番上を意味する。<br>
+Git Bashにとっての一番上ってどこ？は気にしなくてOK。</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_基本操作">6. 基本操作</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>以下、実際のキャプチャーを元に説明します。<br></p>
+</div>
+<div class="sect2">
+<h3 id="_ファイル一覧の取得">6.1. ファイル一覧の取得</h3>
+<div class="paragraph">
+<p><code>ls</code> 今いるディレクトリにあるフォルダやファイルを表示します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/ls.png" alt="ls">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ディレクトリへの移動">6.2. ディレクトリへの移動</h3>
+<div class="paragraph">
+<p><code>cd</code> 特定のフォルダに移動します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/cd.png" alt="cd">
+</div>
+</div>
+<div class="paragraph">
+<p>半角スペースを空けて行きたいディレクトリパスを入力します。例では、「~(ホームディレクトリ)」へ移動しています。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+パスが思い出せないときなんてしょっちゅうだと思います。ターミナルでは少し文字を打ってTabキーで補完できます。<br>
+以下はDesktopの下にあるディレクトリ名が分からなかったときにTabキーを2連打したときです。
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/cd2.png" alt="cd2">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_リモートリポジトリのクローン">6.3. リモートリポジトリのクローン</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>ここからがgitの操作になります。クローンは本当はもっと難しいのですが、ここではおまじないように「ただのダウンロード」だと思ってください。</p>
+</li>
+<li>
+<p>以下のコマンドでstorage_placeリポジトリをクローンします。</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">git clone https://github.com/tyconivms/storage_place.git</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/clone.png" alt="clone">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>クローンしたらディレクトリ移動します。</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/repo.png" alt="repo">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_変更を加える作業">6.4. 変更を加える作業</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>今回の例では、test.txtに変更を加えます。別のフォルダから差し替えるという手法を使います。</p>
+</li>
+<li>
+<p>新しいtest.txtをダウンロードディレクトリに用意しておきました。</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/test.png" alt="test">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>cp</code>コマンドで今いるディレクトリまでコピーします。</p>
+<div class="ulist">
+<ul>
+<li>
+<p>「今いるディレクトリ」は「~/Desktop/Design/tmp/storage_place」ですが、ターミナル上では「.」で表現できます。</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>cp ${元々の場所} ${新しいパス}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/cp.png" alt="cp">
+</div>
+</div>
+</li>
+<li>
+<p>いまいち持ってこれてるかどうか分かりにくいと思いますが、<code>ls</code>の詳細化オプション「-l」で更新日時を確認できます</p>
+<div class="imageblock">
+<div class="content">
+<img src="img/ll.png" alt="ll">
+</div>
+</div>
+</li>
+<li>
+<p>test.txtが更新されてますね。</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_git_add">6.5. git add</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>ファイルをインデックスに登録します。(説明済み)<br>
+といっても一個一個登録するのも時間がかかるため、以下のように登録します。</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>git add .</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/add.png" alt="add">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>.(ここの全部)という意味です。</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+addは変更をインデックスに追加するコマンドなので、例えばファイルを削除したことなども登録します。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_git_commit">6.6. git commit</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>リモートリポジトリに反映させる前にまず、commitする必要があります。</p>
+</li>
+<li>
+<p>システム開発現場ごとでいろんなお約束（Commit粒度やメッセージルール）があるのですが、ここでは特に決めません。IT企業じゃないので。</p>
+</li>
+<li>
+<p>といってもメッセージは必要です。「あ」とかはやめましょう、、<br>
+変更内容にタイトルをつける、と思ってください。</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>git commit -m "ここにコミットメッセージ"</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/cm.png" alt="cm">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ここまでしてもまだ、GitHubには変更は伝わっていません。</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_git_push">6.7. git push</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>いよいよGitHub側のリモートリポジトリに変更を伝えます。</p>
+</li>
+<li>
+<p>コマンドの意味はあまり考えなくていいです。</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>git push origin main</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/push.png" alt="push">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>いちおうGitHub側を確認してみると、、、</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/hub.png" alt="hub">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>いけてます！</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_まとめ">7. まとめ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>addしてcommitしてpushするだけでした。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_説明を省いたこと">付録 A: 説明を省いたこと</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>branch</p>
+<div class="ulist">
+<ul>
+<li>
+<p>本来はmainブランチを直接更新するようなことはしない。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>pull</p>
+<div class="ulist">
+<ul>
+<li>
+<p>複数人開発の場合、誰かがリモートリポジトリに変更を加えた場合はまずローカルリポジトリに反映させるためにpullする必要がある。</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1<br>
+Last updated 2021-12-28 14:01:41 +0900
+</div>
+</div>
+</body>
+</html>
